@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap');
+
+body{
+    font-family: 'Baloo Bhai 2', cursive;
+}
+
+.text-typing label {
+  margin:0px;
+  white-space:nowrap;
+  overflow:hidden;
+  animation:typing 3s linear infinite;
+ -webkit-animation: typing 3s linear infinite;
+}
+
+@keyframes typing {
+  0% { width:0% }
+  50% { width:24% }
+  100% { width:0% }
+
+}
+
+.form-control{
+    flex-flow: row wrap;
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+
+
+
+

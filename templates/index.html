@@ -1,0 +1,541 @@
+{% extends 'base.html' %}
+
+{% block title %}WordCounter - Home{% endblock title %}
+
+{% block homeactive %} active {% endblock homeactive %}
+
+{% block body %}
+
+<div class="container" style="margin-top:65px;">
+    <div class="row">
+        <form action="/analyze" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <div class="col-md-9 mx-auto d-block">
+                <div class="alert alert-success my-5 mb-3" role="alert">
+                    <strong style="font-size:18px">Welcome to wordCounter !</strong> You can do anything with your
+                    text here...
+                </div>
+            </div>
+            <div class="col-md-9 mx-auto d-block">
+                <div class="card-group">
+                    <div class="card text-dark mb-3 shadow-sm" style="max-width: 18rem;">
+                        <div class="card-header text-light text-center" style="background-color:crimson;">
+                            <strong>Character
+                                Counter</strong>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-center" id="charC" style="font-size:20px;"><b>0</b></p>
+                        </div>
+                    </div>
+                    <div class="card text-dark mb-3 shadow-sm" style="max-width: 18rem;">
+                        <div class="card-header text-light text-center" style="background-color:crimson;"><strong>Word
+                                Counter</strong>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-center" id="wordC" style="font-size:20px;"><b>0</b></p>
+                        </div>
+                    </div>
+                    <div class="card text-dark mb-3 shadow-sm" style="max-width: 18rem;">
+                        <div class="card-header text-light text-center" style="background-color:crimson;">
+                            <strong>Sentence
+                                Counter</strong>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-center" id="sentenceC" style="font-size:20px;"><b>0</b></p>
+                        </div>
+                    </div>
+                    <div class="card text-dark mb-3 shadow-sm" style="max-width: 18rem;">
+                        <div class="card-header text-light text-center" style="background-color:crimson;"><strong>Char
+                                Without White
+                                Space</strong>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-center" id="characterWithoutSpace" style="font-size:20px;"><b>0</b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 mx-auto d-block">
+                <div class="card border border-secondary">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-auto">
+                                <input class="form-control border border-secondary" id="filename"
+                                    placeholder="Specify a filename...">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn text-light" id="download" data-toggle="tooltip" data-placement="top"
+                                    title="Download File" style="background-color:darkblue;"><i
+                                        class="fas fa-download"></i></button>
+                            </div>
+                            <div class="col-auto">
+                                <input type="file" class="form-control border border-secondary" id="upload">
+                            </div>
+
+                            <div class="col-auto">
+                                <button class="btn text-light" id="savebtn" name="savedata" style="background-color:darkgreen;">SAVE</button>
+                                {% comment %} <a href="" class="btn text-light" id="savebtn" name="savedata"
+                                    style="background-color:darkgreen" role="button">SAVE
+                                </a> {% endcomment %}
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn text-white" onclick="myFunction()"
+                                    data-toggle="tooltip" data-placement="top" title="Copy Text"
+                                    style="background-color:crimson">
+                                    COPY TEXT
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="submit"
+                                        class="btn btn-dark text-light dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false" data-toggle="tooltip" data-placement="top"
+                                        title="Font Size"><i class="fas fa-text-size"></i>
+
+                                    </button>
+                                    <ul class="dropdown-menu border-secondary" aria-labelledby="btnGroupDrop1">
+                                        <li><a class="dropdown-item" onclick="fs1()" role="button">Default</a></li>
+                                        <li><a class="dropdown-item" onclick="fs2()" role="button">20px</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="fs3()" role="button">25px</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="fs4()" role="button">30px</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="fs5()" role="button">35px</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="fs6()" role="button">40px</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="fs7()" role="button">45px</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="fs8()" role="button">50px</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="fs9()" role="button">55px</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="fs10()" role="button">60px</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn text-light" id="removepuncbtn"
+                                    style="background-color:orangered" name="removepuncbtn">REMOVE PUNCS
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="submit"
+                                        class="btn btn-dark text-light dropdown-toggle" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        T!-CASE
+                                    </button>
+                                    <ul class="dropdown-menu border-secondary" aria-labelledby="btnGroupDrop1">
+                                        <li><a class="dropdown-item" role="button" id="sentencecasebtn">Sentence
+                                                case</a></li>
+                                        <li><a class="dropdown-item" role="button" id="titlecasebtn">Title Case</a></li>
+                                        <li><a class="dropdown-item" role="button" id="uppercasebtn">UPPERCASE</a></li>
+                                        <li><a class="dropdown-item" role="button" id="lowercasebtn">lowercase</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-warning text-black" onclick="triggerUndo()"
+                                    data-toggle="tooltip" data-placement="top" title="UNDO"><i
+                                        class="fas fa-arrow-left"></i>
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-warning text-black" onclick="triggerRedo()"
+                                    data-toggle="tooltip" data-placement="top" title="REDO"><i
+                                        class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="submit" class="btn btn-primary dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">EDIT-TEXT
+                                    </button>
+                                    <ul class="dropdown-menu border-secondary" aria-labelledby="btnGroupDrop1">
+                                        <li><a class="dropdown-item" onclick="boldText()" role="button"><i
+                                                    class="fas fa-bold"></i>old</a></li>
+                                        <li><a class="dropdown-item" onclick="italicText()" role="button"><i
+                                                    class="fas fa-italic"></i>talic</a>
+                                        </li>
+                                        <li><a class="dropdown-item" onclick="underlineText()" role="button"><i
+                                                    class="fas fa-underline"></i>nderline</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-light border-secondary text-black"
+                                    data-toggle="tooltip" data-placement="top" title="Left Align" id="leftalignbtn"><i
+                                        class="fas fa-align-left"></i>
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-light border-secondary text-black"
+                                    data-toggle="tooltip" data-placement="top" title="Center Align"
+                                    id="centeralignbtn"><i class="fas fa-align-center"></i>
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-light border-secondary text-black"
+                                    data-toggle="tooltip" data-placement="top" title="Right Align" id="rightalignbtn"><i
+                                        class="fas fa-align-right"></i>
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group" role="group">
+                                  
+                                    <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle text-light"
+                                        style="background-color:purple;" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        TEXT-COLOR
+                                    </button>
+                                    <div class="dropdown-menu border-secondary" aria-labelledby="btnGroupDrop1"
+                                        style="width: max-content;">
+                                        <div class="row row-cols-lg-10 g-2 mx-1">
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" style="height:20px;background-color: red;"
+                                                    role="button" onclick="cl1()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: green;" onclick="cl2()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: blue;" onclick="cl3()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: orangered;"
+                                                    onclick="cl4()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: black;" onclick="cl5()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: purple;" onclick="cl6()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: grey;" onclick="cl7()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: yellow;" onclick="cl8()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: pink;" onclick="cl9()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: skyblue;" onclick="cl10()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: crimson;" onclick="cl11()"></a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="dropdown-item" role="button"
+                                                    style="height: 20px;background-color: brown;" onclick="cl12()"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn text-light clear" id="clearbtn"
+                                    style="background-color:red">CLEAR
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 mx-auto d-block text-typing">
+                <div class="form-group form-control-inline">
+                    <label for="exampleFormControlTextarea1" class="form-label mt-2">Enter your text here
+                        :</label>
+                </div>
+                <textarea class="form-control shadow-sm inputRegion border border-secondary" name="text" id="textArea"
+                    rows="9" placeholder="Start writing from here...." required>{{edittext.text}}</textarea>
+            </div>
+            <div class="col-md-9 text-center mx-auto d-block">
+                <div class="card-header border border-secondary">
+                    <p class="text-center mt-1">Enter ( by typing directly or using copy paste ) your
+                        text
+                        and find out how many words and characters it contains.</p>
+                </div>
+            </div>
+
+        </form>
+
+
+
+        {% comment %} section-2 {% endcomment %}
+        <div class="col-md-12 mt-5">
+            <div class="alert alert-success shadow border border-success" role="alert">
+                <strong style="font-size:20px;margin-top:5px;">Important Instructions:</strong>
+                <div class="mt-2">
+                    <p>1. This is a word counter website which provides you the facilities for counting word,
+                        character
+                        and
+                        sentence present in a text.</p>
+                    <p>2. Create your account to access all functionalities OR features, Because without login you
+                        cannot access advanced functionalities OR features.</p>
+                    <p>2. Please give your feedback about this site. Your feedback should be positive because it
+                        gives
+                        us
+                        changebility knowledge. </p>
+                    <p>3. You can used extra functionalities to edit or transform your text and words here. In that
+                        you
+                        can
+                        used punctuation removal and upper case converter. </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-5">
+            <div class="card text-dark mb-3 shadow">
+                <div class="card-header text-light text-center" style="font-size:25px;background-color:darkgreen">
+                    <strong>Why should online word counter?</strong>
+                </div>
+                <div style="height:10px;background-color:rgb(0, 238, 0);"></div>
+                <div class="card-body" style="font-size:18px;">
+                    <p>
+                        Online word counters are a perfect tool for anyone who needs to keep a count of their words
+                        and
+                        characters, but doesn’t use Microsoft Word. Imagine writing a piece and having to manually
+                        count
+                        the words! Not only will it take forever, but there’s a chance you won’t be wholly accurate.
+                    </p>
+
+
+                    <p>
+                        This tool is also a good way to assess your words per minute typing rate. Simply time
+                        yourself
+                        timing for five minutes. Type into the box on the online word counter. When the time is up,
+                        divide your total word count by five, and you have your average words per minute rate.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Section - 3 {% endcomment %}
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h3
+                style="background-color:darkblue;font-size:30px;font-weight:800;color:white;padding:8px; text-align: center;">
+                Feedback</h3>
+            <div style="height:10px;background-color:cyan;margin-top:-10px;"></div>
+        </div>
+        <div class="col-md-6 mt-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="feedback-form my-3">
+                        <h2 style="text-align:center;"><strong>Hii, <span class="text-danger">{{user}}</span>
+                                !</strong>
+                        </h2>
+                        <h2 style="text-align:center;"><strong>Your feedback is very important for us !</strong>
+                        </h2>
+                        <form action="/" method="post" style="width:575px;margin:auto;">
+                            {% csrf_token %}
+                            <div class="form-group mb-3 my-3">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control border-secondary" id="name" name="name" aria-describedby="name"
+                                    placeholder="Enter your Name" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control border-secondary" id="email" name="email"
+                                    aria-describedby="emailHelp" placeholder="Enter your Email" required>
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with
+                                    anyone
+                                    else.</small>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" class="form-control border-secondary" id="phone" name="phone"
+                                    placeholder="Enter your Phone Number" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="content">Describe your feedback:</label>
+                                <textarea class="form-control border-secondary" name="feedback" id="feedback" cols="30" rows="5"
+                                    placeholder="Your message" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-danger mb-3">Send Feedback</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %} show user feedback {% endcomment %}
+        <div class="col-md-6 mt-5">
+            <div class="accordion" id="accordionFlushExample">
+                <h4><strong>See Here All Users Feedback :</strong></h4>
+                {% for userfeed in userfeedbacks %}
+                <div class="accordion-item border-secondary">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            {{userfeed.name}} - {{userfeed.feedback_date}}
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                        data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">{{userfeed.feedback}}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% load static %}
+        <div class="col-md-12 mt-5">
+            <h3
+                style="background-color:rgb(187, 0, 37);font-size:30px;font-weight:800;color:white;padding:8px; text-align: center;">
+                What is Word Counter?</h3>
+            <div style="height:10px;background-color:rgb(255, 144, 162);margin-top:-10px;"></div>
+
+        </div>
+        <div class="col-md-12 mt-3">
+            <img src="{% static 'image/WC.png' %}" class="rounded mx-auto d-block">
+        </div>
+        <div class="col-md-12 mt-3">
+            <p class="text-justify" style="font-size:20px;text-indent:80px;"> Apart from counting words and
+                characters, our online editor can help you to improve word choice and
+                writing style, and, optionally, help you to detect grammar mistakes and plagiarism. To check word
+                count, simply place your cursor into the text box above and start typing. You'll see the number of
+                characters and words increase or decrease as you type, delete, and edit them. You can also copy and
+                paste text from another program over into the online editor above. The Auto-Save feature will make
+                sure you won't lose any changes while editing, even if you leave the site and come back later. Tip:
+                Bookmark this page now.
+
+                Knowing the word count of a text can be important. For example, if an author has to write a minimum
+                or maximum amount of words for an article, essay, report, story, book, paper, you name it.
+                WordCounter will help to make sure its word count reaches a specific requirement or stays within a
+                certain limit.
+
+                In addition, WordCounter shows you the top 10 keywords and keyword density of the article you're
+                writing. This allows you to know which keywords you use how often and at what percentages. This can
+                prevent you from over-using certain words or word combinations and check for best distribution of
+                keywords in your writing.
+
+                In the Details overview you can see the average speaking and reading time for your text, while
+                Reading Level is an indicator of the education level a person would need in order to understand the
+                words you’re using.
+
+            </p>
+            <p class="text-justify" style="font-size:20px;"><strong>Disclaimer:</strong> We strive to make our tools
+                as accurate as possible but we cannot guarantee it will
+                always be so.</p>
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock body %}
+
+{% block js %}
+<script>
+    let inputTextArea = document.getElementById('textArea');
+    let charCount = document.getElementById('charC');
+    let wordCount = document.getElementById('wordC');
+    let sentenceCount = document.getElementById('sentenceC');
+    let characterWithoutSpace = document.getElementById('characterWithoutSpace');
+    let clearbtn = document.getElementById('clearbtn');
+    let uppercasebtn = document.getElementById('uppercasebtn');
+    let lowercasebtn = document.getElementById('lowercasebtn');
+    let titlecasebtn = document.getElementById('titlecasebtn');
+    let sentencecasebtn = document.getElementById('sentencecasebtn');
+    let removepuncbtn = document.getElementById('removepuncbtn');
+    let leftalignbtn = document.getElementById('leftalignbtn');
+    let centeralignbtn = document.getElementById('centeralignbtn');
+    let rightalignbtn = document.getElementById('rightalignbtn');
+
+
+
+    inputTextArea.addEventListener("input", () => {
+        // Count number of characters
+        charCount.textContent = inputTextArea.value.length;
+
+        // Remove whitespaces from both the sides of the string
+        let txt = inputTextArea.value.trim();
+
+        //split the text at spaces into the array of the substrings
+        // filter the empty string and count the length of the array
+        wordCount.textContent = txt.split(/\s+/).filter((item) => item).length;
+
+        //count the number of sentence
+        sentenceCount.textContent = txt.split(".").length - 1;
+
+        let chars = inputTextArea.value;
+        characterWithoutSpace.textContent = (chars.length + 1) - chars.split(" ").length;
+
+
+    });
+
+    clearbtn.onclick = () => {
+        inputTextArea.value = "";
+    }
+
+    uppercasebtn.onclick = () => {
+        inputTextArea.value = inputTextArea.value.toUpperCase();
+    }
+
+    lowercasebtn.onclick = () => {
+        inputTextArea.value = inputTextArea.value.toLowerCase();
+    }
+
+    sentencecasebtn.onclick = () => {
+        if (inputTextArea.value == inputTextArea.value.toUpperCase()) {
+            inputTextArea.value = inputTextArea.value.toLowerCase();
+            inputTextArea.value = inputTextArea.value.charAt(0).toUpperCase() + inputTextArea.value.slice(1);
+        }
+        else {
+            inputTextArea.value = inputTextArea.value.charAt(0).toUpperCase() + inputTextArea.value.slice(1);
+        }
+    }
+
+    titlecasebtn.onclick = () => {
+        var sentence = inputTextArea.value.toLowerCase().split(" ");
+        for (var i = 0; i < sentence.length; i++) {
+            sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+        }
+
+        inputTextArea.value = sentence.toString().replace(/,/g, ' ');
+    }
+
+    leftalignbtn.onclick = () => {
+        inputTextArea.style.textAlign = "left";
+    }
+
+    centeralignbtn.onclick = () => {
+        inputTextArea.style.textAlign = "center";
+    }
+
+    rightalignbtn.onclick = () => {
+        inputTextArea.style.textAlign = "right";
+    }
+
+    removepuncbtn.onclick = () => {
+        inputTextArea.value = inputTextArea.value.replace(/[^a-zA-Z ]/g, "");
+    }
+
+
+</script>
+
+{% endblock js %}

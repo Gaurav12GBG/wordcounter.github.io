@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}WordCounter - About{% endblock title %}
+
+{% block aboutactive %} active {% endblock aboutactive %}
+
+{% block body %}
+<div class="container">
+    <div class="row featurette" style="margin-top:8.5rem;">
+        <div class="col-md-7">
+            {% load static %}
+            <h2 class="featurette-heading"><strong><img src="{% static 'image/aboutSmile.png' %}" width="40px">About Me</strong></h2>
+            <p class="lead">Gaurav Gangurder the creator of this website is a software developer. I have contributed my
+                ideas with lots of project in Django. I have done various projects on various technologies. I am
+                passionate to learn and implement new things quickly. This website serves as a medium to share my
+                knowledge with the world.</p>
+        </div>
+        <div class="col-md-5">
+            <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                src="https://source.unsplash.com/1600x900/?code, laptop" alt="">
+        </div>
+    </div>
+
+
+    <div class="row featurette" style="margin-top:6.5rem;margin-left:0.5rem;">
+        <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading"><strong>About wordcounter</strong></h2>
+            <p class="lead">This website is a very simple, clickable and easy to understand. In this website any user
+                can check count of word, characters, sentence and other functionalities related to the word. In this
+                website there is again one blog app from which you can built your grammer and fluent communication. </p>
+        </div>
+        <div class="col-md-5 order-md-1">
+            <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                src="https://source.unsplash.com/1600x900/?wordcount, website" alt="">
+        </div>
+    </div>
+    <div class="social_media shadow">
+        <h2>Follow Me On...</h2>
+        <div class="insta">
+            {% load static %}
+            <a href="https://www.instagram.com/gangurdegauravb/"><img id="i1" src="{% static 'image/instagram.png' %}" ></a>
+            <a href="https://www.facebook.com/gaurav.gangurde.3990"><img id="f1" src="{% static 'image/facebook.png' %}" ></a>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock body %}

@@ -1,0 +1,36 @@
+.social_media{
+    margin: 75px auto;
+    border: 1px solid rgb(212, 212, 212);
+    padding: 18px;
+    width: 550px;
+    
+}
+
+.social_media h2{
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.insta{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.insta a #i1{
+    width: 100px;
+    margin: 10px;
+}
+
+.insta a #f1{
+    width: 115px;
+    margin: 10px;
+}
+
+/* Contact Us */
+
+
+
+

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}WordCounter - View-History{% endblock title %}
+
+{% block viewHistoryactive %} active {% endblock viewHistoryactive %}
+
+{% block body %}
+<div class="container" style="margin-top:100px;">
+    <div class="card mt-5 shadow">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 text-center d-grid">
+                        <h2><strong>See Your Current History</strong></h2>
+                        <p>You can download, edit and delete your contents.</p>
+                    <table class="table table-bordered border-secondary w-75 mx-auto align-middle">
+                        <tr>
+                            <th>S.No</th>
+                            <th>Text Contect</th>
+                            <th>Last Modified/Saved Time</th>
+                            <th class="w-50">Actions</th>
+                        </tr>
+                        {% for texthistory in texthistories %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{texthistory.text}}</td>
+                            <td>{{texthistory.contentsavedate}}</td>
+                            <td><a href="/update_content/{{texthistory.id}}" class="btn  text-light mx-1" style="background-color:darkgreen;" role="button"><i class="far fa-edit"></i> Edit File</a>
+                                <a href="/delete_content/{{texthistory.id}}" class="btn  text-light mx-1" style="background-color:red;" role="button" onclick = "return confirm('Are you sure you want to DELETE?')"><i class="far fa-trash-alt"></i> Delete File</a>
+                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body%}
